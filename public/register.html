@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+    />
+    <title>Registro</title>
+  </head>
+  <body
+    class="container col-6 d-flex justify-content-center align-items-center bg-dark text-white"
+    style="height: 100vh"
+  >
+    <div class="col-6">
+      <div class="card text-white bg-dark mb-3">
+        <div class="card-header">
+          <h5>Registro</h5>
+          <a class="btn btn-primary" href="/login">Login</a>
+        </div>
+        <div class="card-body">
+          <form id="register-form">
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+              <input
+                type="email"
+                autocomplete="off"
+                id="input-user-email"
+                name="input-user-email"
+                class="form-control"
+              />
+              <label class="form-label" for="input-user-email"
+                >Ingrese su email</label
+              >
+            </div>
+            <!-- Password input -->
+            <div class="form-outline mb-4">
+              <input
+                type="password"
+                autocomplete="off"
+                id="input-user-password"
+                name="input-user-password"
+                class="form-control"
+              />
+              <label class="form-label" for="input-user-password"
+                >Ingrese su clave</label
+              >
+            </div>
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block w-100 mb-4">
+              Enviar
+            </button>
+            <div id="error-list-container" class="d-none">
+              <ul id="error-list" class="text-danger"></ul>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      const $registerForm = document.getElementById("register-form");
+
+      $registerForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const email = formData.get("input-user-email");
+        const password = formData.get("input-user-password");
+
+        const user = {
+          email,
+          password,
+        };
+
+        const response = await fetch("http://localhost:8080/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        });
+
+        const result = await response.json();
+        const $errorListContainer = document.getElementById(
+          "error-list-container"
+        );
+        const $errorList = document.getElementById("error-list");
+
+        if (response.status !== 200) {
+          $errorListContainer.classList.remove("d-none");
+
+          const $errorItem = document.createElement("li");
+          $errorItem.textContent = result.message;
+          $errorList.appendChild($errorItem);
+        } else {
+          const hasDisplayNone =
+            $errorListContainer.classList.contains("d-none");
+          if (!hasDisplayNone) {
+            $errorListContainer.classList.add("d-none");
+          }
+          while ($errorList.firstChild) {
+            $errorList.removeChild($errorList.firstChild);
+          }
+          $registerForm.reset();
+        }
+      });
+    </script>
+  </body>
+</html>

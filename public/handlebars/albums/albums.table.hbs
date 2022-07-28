@@ -1,0 +1,21 @@
+<div class="col">
+  <div class="card border-primary mb-3">
+    <div class="card-header text-center">Álbumes</div>
+    <div class="card-body">
+        <table class="table table-bordered text-white">
+          <thead>
+            <tr class="text-center">
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Foto</th>
+            </tr>
+          </thead>
+          <tbody id="albums-table-body">
+            {{#each albums}}
+              {{> album }}
+            {{/each}}
+          </tbody>
+        </table>
+    </div>
+  </div>
+</div>

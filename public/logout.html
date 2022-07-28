@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+    />
+    <title>Logout</title>
+  </head>
+  <body
+    class="container col-6 d-flex justify-content-center align-items-center bg-dark text-white"
+    style="height: 100vh"
+  >
+    <div class="col-6">
+      <h1 id="user-farewell"></h1>
+    </div>
+  </body>
+</html>
+
+<script>
+  const getUser = async () => {
+    const response = await fetch("http://localhost:8080/login/user");
+    const result = await response.json();
+    const $userGreeting = document.getElementById("user-farewell");
+    $userGreeting.innerText = `Hasta luego ${result.user}!`;
+  };
+
+  const logoutUser = async () => {
+    const response = await fetch("http://localhost:8080/logout/destroy");
+    const result = await response.json();
+  };
+
+  getUser();
+  logoutUser();
+</script>

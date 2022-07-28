@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+    />
+    <title>Login</title>
+  </head>
+  <body
+    class="container col-6 d-flex justify-content-center align-items-center bg-dark text-white"
+    style="height: 100vh"
+  >
+    <div class="col-6">
+      <div class="card text-white bg-dark mb-3">
+        <div class="card-header">
+          <h5>Login</h5>
+          <a class="btn btn-primary" href="/register">Registrarse</a>
+        </div>
+        <div class="card-body">
+          <form id="login-form">
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+              <input
+                type="email"
+                autocomplete="off"
+                id="input-user-email"
+                name="input-user-email"
+                class="form-control"
+              />
+              <label class="form-label" for="input-user-email"
+                >Ingrese su email</label
+              >
+            </div>
+            <!-- Password input -->
+            <div class="form-outline mb-4">
+              <input
+                type="password"
+                autocomplete="off"
+                id="input-user-password"
+                name="input-user-password"
+                class="form-control"
+              />
+              <label class="form-label" for="input-user-password"
+                >Ingrese su clave</label
+              >
+            </div>
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block w-100 mb-4">
+              Enviar
+            </button>
+            <div id="error-list-container" class="d-none">
+              <ul id="error-list" class="text-danger"></ul>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  const $loginForm = document.getElementById("login-form");
+
+  $loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const $errorListContainer = document.getElementById("error-list-container");
+    const $errorList = document.getElementById("error-list");
+    while ($errorList.firstChild) {
+      $errorList.removeChild($errorList.firstChild);
+    }
+    const formData = new FormData(event.target);
+    const email = formData.get("input-user-email");
+    const password = formData.get("input-user-password");
+    $loginForm.reset();
+
+    const user = {
+      email,
+      password,
+    };
+
+    const response = await fetch("http://localhost:8080/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+
+    if (response.status === 200) {
+      const hasDisplayNone = $errorListContainer.classList.contains("d-none");
+      if (!hasDisplayNone) {
+        $errorListContainer.classList.add("d-none");
+      }
+      $loginForm.reset();
+      window.location.href = "/home";
+    } else {
+      $errorListContainer.classList.remove("d-none");
+
+      const $errorItem = document.createElement("li");
+      $errorItem.textContent = "Usuario o clave incorrecto";
+      $errorList.appendChild($errorItem);
+    }
+  });
+</script>
