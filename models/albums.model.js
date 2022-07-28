@@ -1,4 +1,4 @@
-const { faker } = require("@faker-js/faker");
+/*const { faker } = require("@faker-js/faker");
 
 const products = generateFakeProducts();
 function generateFakeProducts() {
@@ -13,6 +13,8 @@ function generateFakeProducts() {
     products.push(product);
   }
   return products;
-}
+}*/
+
+products = [];
 
 module.exports = products;
