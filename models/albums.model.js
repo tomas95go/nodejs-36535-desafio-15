@@ -15,6 +15,6 @@ function generateFakeProducts() {
   return products;
 }*/
 
-products = [];
+const products = [];
 
 module.exports = products;
