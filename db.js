@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 async function connect() {
   try {
-    await mongoose.connect(MONGO_ATLAS_CREDENTIALS, {
+    await mongoose.connect(process.env.MONGO_ATLAS_CREDENTIALS, {
       dbName: process.env.MONGO_DATABASE,
     });
   } catch (error) {
